@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/renko.png">
+  <link rel="icon" href="/img/renko.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="usagirenko">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第一篇学习记录，比起写什么怎么写更让人纠结目前计划大概是根据csdiy的学习规划进行，CS50过后大概是CS61A,在四月入学前与mit的微积分线性代数一并完成（？）,试一下markdown   CS50(Week7)  CS61A(新建文件夹)  MIT18.01(新建文件夹),MIT18.02(新建文件夹)  MIT18.06(新建文件夹)不知道该说是太能拖了还是太鶸了,预计学时20小时的课程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2024-02-01 CS50-Week7-SQl">
+<meta property="og:url" content="https://usagirenko.github.io/2024/02/01/CS50-Week7-SQl/index.html">
+<meta property="og:site_name" content="usagirenko&#39;s blog">
+<meta property="og:description" content="第一篇学习记录，比起写什么怎么写更让人纠结目前计划大概是根据csdiy的学习规划进行，CS50过后大概是CS61A,在四月入学前与mit的微积分线性代数一并完成（？）,试一下markdown   CS50(Week7)  CS61A(新建文件夹)  MIT18.01(新建文件夹),MIT18.02(新建文件夹)  MIT18.06(新建文件夹)不知道该说是太能拖了还是太鶸了,预计学时20小时的课程">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-01T05:33:21.000Z">
+<meta property="article:modified_time" content="2024-02-02T07:44:32.967Z">
+<meta property="article:author" content="usagirenko">
+<meta property="article:tag" content="学习记录">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>2024-02-01 CS50-Week7-SQl - usagirenko&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"usagirenko.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>usagirenko&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="2024-02-01 CS50-Week7-SQl"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-01 14:33" pubdate>
+          February 1, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          526 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">2024-02-01 CS50-Week7-SQl</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>第一篇学习记录，比起写什么怎么写更让人纠结<br>目前计划大概是根据<a target="_blank" rel="noopener" href="https://csdiy.wiki/">csdiy</a>的学习规划进行，CS50过后大概是CS61A,在四月入学前与mit的微积分线性代数一并完成（？）,试一下markdown</p>
+<ul>
+<li><input disabled="" type="checkbox"> <a target="_blank" rel="noopener" href="https://cs50.harvard.edu/x/2024/">CS50(Week7)</a></li>
+<li><input disabled="" type="checkbox"> <a target="_blank" rel="noopener" href="https://cs61a.org/">CS61A(新建文件夹)</a></li>
+<li><input disabled="" type="checkbox"> <a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/syllabus/">MIT18.01(新建文件夹)</a>,<a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/">MIT18.02(新建文件夹)</a></li>
+<li><input disabled="" type="checkbox"> <a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/syllabus/">MIT18.06(新建文件夹)</a><br>不知道该说是太能拖了还是太鶸了,预计学时20小时的课程从去年十二月到现在一个月了还是停滞在sql…<br>趁现在blog也搭好了趁机再开吧。<br>由于时间不够看完lecture于是选择了时间更短的section。</li>
+</ul>
+<h1 id="Section"><a href="#Section" class="headerlink" title="Section"></a>Section</h1><h2 id="private-key-foreign-key"><a href="#private-key-foreign-key" class="headerlink" title="private key,foreign key"></a>private key,foreign key</h2><ol>
+<li>a primary key is thay unique id for every row in that table.当primary key在其他table被使用时即foreign key。</li>
+<li>多对多关系时常用joined table或说junction table来表示table之间的关系</li>
+</ol>
+<h2 id="Design-principles"><a href="#Design-principles" class="headerlink" title="Design principles"></a>Design principles</h2><ul>
+<li>Create one table for each entity in your dataset</li>
+<li>All tablese should have a primary key.</li>
+<li>The information in that table should depend on the primary key only.</li>
+</ul>
+<h3 id="Create-a-new-database-file-called-read-db"><a href="#Create-a-new-database-file-called-read-db" class="headerlink" title="Create a new database file called read.db"></a>Create a new database file called read.db</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ sqlite3 reads.db<br></code></pre></td></tr></table></figure>
+<p>应该会变成这样:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="SQL-syntax"><a href="#SQL-syntax" class="headerlink" title="SQL syntax"></a>SQL syntax</h2><h3 id="Create-table-types’-kinds"><a href="#Create-table-types’-kinds" class="headerlink" title="Create table,types’ kinds"></a>Create table,types’ kinds</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> table_name (<br>	...<span class="hljs-operator">&gt;</span>	column0 <span class="hljs-type">INTEGER</span>,<br>	...<span class="hljs-operator">&gt;</span>	column1 TEXT,<br>	...<span class="hljs-operator">&gt;</span>	column2 <span class="hljs-type">NUMERIC</span>,<br>	...<span class="hljs-operator">&gt;</span>	column3 <span class="hljs-type">REAL</span><br>	...<span class="hljs-operator">&gt;</span> );<br></code></pre></td></tr></table></figure>
+
+<h3 id="Set-primary-key"><a href="#Set-primary-key" class="headerlink" title="Set primary key"></a>Set primary key</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> table_name (<br>	...<span class="hljs-operator">&gt;</span>	column0 <span class="hljs-type">INTEGER</span>,<br>	...<span class="hljs-operator">&gt;</span>	column1 TEXT,<br>	...<span class="hljs-operator">&gt;</span>	column2 <span class="hljs-type">NUMERIC</span>,<br>	...<span class="hljs-operator">&gt;</span>	column3 <span class="hljs-type">REAL</span>,<br>	...<span class="hljs-operator">&gt;</span>	<span class="hljs-keyword">PRIMARY</span> KEY(column0)<br>	...<span class="hljs-operator">&gt;</span> );<br></code></pre></td></tr></table></figure>
+
+<h3 id="Tell-me-what-tables-do-i-have-in-this-database"><a href="#Tell-me-what-tables-do-i-have-in-this-database" class="headerlink" title="Tell me what tables do i have in this database"></a>Tell me what tables do i have in this database</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> .tables<br></code></pre></td></tr></table></figure>
+<h3 id="what-the-columns-is-in-the-table"><a href="#what-the-columns-is-in-the-table" class="headerlink" title="what the columns is in the table"></a>what the columns is in the table</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> .schema <span class="hljs-keyword">table</span><br></code></pre></td></tr></table></figure>
+<h2 id="joined-table的primary-key？"><a href="#joined-table的primary-key？" class="headerlink" title="joined table的primary key？"></a>joined table的primary key？</h2><p>authored table里面有author id和book id两个column，似乎这俩个哪一个都不是authored table的primary id？</p>
+<p>authored table的primary key并非单独哪一个column，而是这两个column的组合作为该table的primary id</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> authored (<br>...<span class="hljs-operator">&gt;</span>    author_id <span class="hljs-type">INTEGER</span>,<br>...<span class="hljs-operator">&gt;</span>    book_id <span class="hljs-type">INTEGER</span>,<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">PRIMARY</span> KEY(author_id,book_id),<br>...<span class="hljs-operator">&gt;</span>    FOREGIN KEY(author_id) <span class="hljs-keyword">REFERENCES</span> author(id),<br>...<span class="hljs-operator">&gt;</span>    FOREGIN KEY(book_id) <span class="hljs-keyword">REFERENCES</span> booke(id)<br>...<span class="hljs-operator">&gt;</span> );<br></code></pre></td></tr></table></figure>
+
+<h2 id="Inserting-Deleting"><a href="#Inserting-Deleting" class="headerlink" title="Inserting,Deleting"></a>Inserting,Deleting</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">table</span> (column0,column1)<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">VALUES</span>(value0,value1);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span><br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">condition</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p><em>Inserting</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> books (tittle,pubished,rating)<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">VALUES</span>(<span class="hljs-string">&#x27;Flights&#x27;</span>,<span class="hljs-string">&#x27;2017-05-17&#x27;</span>,<span class="hljs-number">4</span>);<br></code></pre></td></tr></table></figure>
+<p><strong>尽管并没有输入作为books table的primary key，id</strong><br><strong>但实际上primary key会被自动添加</strong><br><em>一次添加多个值</em><br>将<code>...&gt;    VALUES(&#39;Flights&#39;,&#39;2017-05-17&#39;,4);</code>中的<code>;</code>更改为<code>,</code>并继续重复直到停止添加以<code>;</code>结尾即可</p>
+<p><em>Selecting</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> books;<br></code></pre></td></tr></table></figure>
+
+<p><em>Delecting</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> books;<br></code></pre></td></tr></table></figure>
+<p><em>TIPS:这会直接删除整个book table</em></p>
+<p>想删除个别时使用WHERE … &#x3D; …</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> books <span class="hljs-keyword">WHERE</span> tittle <span class="hljs-operator">=</span><span class="hljs-string">&#x27;Flights&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Leave-sqlite"><a href="#Leave-sqlite" class="headerlink" title="Leave sqlite"></a>Leave sqlite</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> .quit<br></code></pre></td></tr></table></figure>
+
+<h3 id="read-doc"><a href="#read-doc" class="headerlink" title="read doc"></a>read doc</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> .read <span class="hljs-number">1.</span><span class="hljs-keyword">sql</span>;<br></code></pre></td></tr></table></figure>
+<p><em>read into sqlite,runing and sql statements it sees</em></p>
+<p><strong>SELECT</strong><br><strong>WHERE</strong><br><strong>LIKE</strong><br><strong>ORDER BY</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs SQL">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span> name <br>sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">FROM</span> songs<br>sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> duration<span class="hljs-operator">-</span>ms <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure>
+<p><strong>ASC:ascending,升序</strong><br><strong>DESC:descending,降序</strong></p>
+<h2 id="Aggregate-Function"><a href="#Aggregate-Function" class="headerlink" title="Aggregate Function"></a>Aggregate Function</h2><h3 id="Keywords-to-calculate-data-from-multiple"><a href="#Keywords-to-calculate-data-from-multiple" class="headerlink" title="Keywords to calculate data from multiple"></a>Keywords to calculate data from multiple</h3><p><strong>SELECT COUNT</strong>(column)<br><strong>FORM</strong> table<br><strong>WHERE</strong> condition;</p>
+<p><strong>SELECT AVG</strong>(column)<br><strong>FROM</strong> table<br><strong>WHERE</strong> condition;</p>
+<p><strong>SELECT ROUND(AVG(energy)，2)</strong></p>
+<h2 id="Combining-Tables"><a href="#Combining-Tables" class="headerlink" title="Combining Tables"></a>Combining Tables</h2><h3 id="Methods-to-reference-data-from-multiple-tables"><a href="#Methods-to-reference-data-from-multiple-tables" class="headerlink" title="Methods to reference data from multiple tables"></a>Methods to reference data from multiple tables</h3><p><strong>Sub queries</strong><br><strong>Join</strong></p>
+<p><strong>Sub queries</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span> rating<br>	    <span class="hljs-keyword">FROM</span> ratings<br>	    <span class="hljs-keyword">WHERE</span> movie_id <span class="hljs-operator">=</span> (<br>	    	<span class="hljs-keyword">SELECT</span> id<br>	    	<span class="hljs-keyword">FROM</span> movies<br>	    	<span class="hljs-keyword">WHERE</span> tittle <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Cars 3&#x27;</span><br>	    	);<br></code></pre></td></tr></table></figure>
+<p><strong>join</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span> songs.name,energy,artists.name<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">FROM</span> songs<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">JOIN</span> artists <span class="hljs-keyword">ON</span> artists.id <span class="hljs-operator">=</span> songs.artists_id<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">WHERE</span> artists.name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Drake&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Like"><a href="#Like" class="headerlink" title="Like"></a>Like</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span> name<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">FROM</span> songs<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">WHERE</span> name <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;%feat.%&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Group-by"><a href="#Group-by" class="headerlink" title="Group by"></a>Group by</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span> atrists.name, <span class="hljs-built_in">COUNT</span>(artists.name)<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">FROM</span> songs<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">JOIN</span> artists <span class="hljs-keyword">ON</span> atrists,id <span class="hljs-operator">=</span> songs.artist_id<br>...<span class="hljs-operator">&gt;</span>    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> artists.name;<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%9B%B8%E5%85%B3/" class="category-chain-item">学习相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" class="category-chain-item">计算机科学</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/CS50/" class="category-chain-item">CS50</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/CS50/Week7/" class="category-chain-item">Week7</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/CS50/Week7/SQL/" class="category-chain-item">SQL</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" class="print-no-link">#学习记录</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>2024-02-01 CS50-Week7-SQl</div>
+      <div>https://usagirenko.github.io/2024/02/01/CS50-Week7-SQl/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>usagirenko</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 1, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/01/%E6%9D%A5%E8%87%AA%E6%B7%B1%E5%A4%9C%E4%BA%94%E7%82%B9%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87post/" title="2024-02-01 来自深夜五点的第一篇post">
+                        <span class="hidden-mobile">2024-02-01 来自深夜五点的第一篇post</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
